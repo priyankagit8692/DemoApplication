@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,6 +36,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity(exceptionResponse,HttpStatus.NOT_FOUND);
 	}
 	
+
+	
 	 @Override
 	  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 	      HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -48,9 +51,18 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		      new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
 		    return handleExceptionInternal(
 		      ex, apiError, headers, apiError.getStatus(), request);
-		    
-		/* ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.get,
-				 request.getDescription(false));
-	    return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);*/
+		
 	  } 
+	 
+	 
+	/* @Override
+	 protected ResponseEntity<Object> handleMissingPathVariable(
+				MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+		
+		    ApiError apiError = 
+			      new ApiError(HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage());
+			    return handleExceptionInternal(
+			      ex, apiError, headers, apiError.getStatus(), request);
+	 }*/
+	 
 }

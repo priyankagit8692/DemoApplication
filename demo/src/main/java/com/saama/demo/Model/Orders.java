@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.NotNull;
@@ -30,6 +32,7 @@ public class Orders {
 	private long id;
 	
 	@Column(name = "order_name")
+	@Size(min = 4,message = "Order Name should have atleast 4 character")
 	private String orderName;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

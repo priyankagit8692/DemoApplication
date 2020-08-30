@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.lang.NonNull;
 
@@ -25,6 +28,7 @@ public class OrderDetails {
 	private long orderDetailId;
 
 	@Column(name = "order_qty")
+	@Min(2)
 	private int orderQty;
 	
 	@Column(name = "purchase_amt")

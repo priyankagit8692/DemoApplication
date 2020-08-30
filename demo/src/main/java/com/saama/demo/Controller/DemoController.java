@@ -4,14 +4,15 @@ package com.saama.demo.Controller;
 import java.util.List;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api")
+@Validated
 @Api(value = "Customer and Order Details", description = "Customer and Order Details for Demo",tags = "Demo-Controller")
 public class DemoController {
 	
@@ -50,7 +52,7 @@ public class DemoController {
 	@ApiOperation(value = " Get orders for the customer")
 	@PostMapping("/customer/{customerId}/orders")
     public ResponseEntity<Orders> addOrders(@PathVariable("customerId") @NotBlank Long customerId,
-                            @RequestBody Orders orders) {
+                            @Valid @RequestBody Orders orders) {
 		LOGGER.debug("creating order of customer with customer id :"+customerId);
 		Orders addOrderentity = demoService.addOrders(customerId, orders);
 		return new ResponseEntity<Orders>(addOrderentity,HttpStatus.CREATED);
@@ -60,7 +62,7 @@ public class DemoController {
 	@ApiOperation(value = "Add order details for the Customer Orderr")
 	 @PostMapping("/orders/{orderId}/orderDetails")
 	    public ResponseEntity<OrderDetails> addOrderDetail(@PathVariable Long orderId,
-	                             @RequestBody OrderDetails orderDetails) {
+	                            @Valid @RequestBody OrderDetails orderDetails) {
 		LOGGER.debug("Add order detail for the customer order");
 		OrderDetails addOrderDetailEntity = demoService.addOrderDetailorderId(orderId,orderDetails);
 		return new ResponseEntity<OrderDetails>(addOrderDetailEntity,HttpStatus.CREATED);
@@ -98,7 +100,7 @@ public class DemoController {
     
 	@ApiOperation(value = " Get detail of the Customer with specific customer id")
     @GetMapping("/customer/{id}")
-    public ResponseEntity<Customer> getCustomerByID(@PathVariable("id")@NotBlank Long id) {
+    public ResponseEntity<Customer> getCustomerByID(@PathVariable("id") Long id) {
 		Customer customerEntity = demoService.getCustomerByID(id);
       return new ResponseEntity<Customer>(customerEntity,HttpStatus.OK);
     }
