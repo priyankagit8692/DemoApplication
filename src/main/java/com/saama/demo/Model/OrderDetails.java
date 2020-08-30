@@ -37,10 +37,8 @@ public class OrderDetails {
 	
 	public OrderDetails() {}
 
-	public OrderDetails(long orderDetailId, int orderQty, double purchaseAmt, Orders orders) {
-		
+	public OrderDetails(long orderDetailId, int orderQty, double purchaseAmount, Orders orders) {
 		this.orderDetailId = orderDetailId;
-		;
 		this.orderQty = orderQty;
 		this.purchaseAmount = purchaseAmount;
 		this.orders = orders;
@@ -54,8 +52,6 @@ public class OrderDetails {
 		this.orderDetailId = orderDetailId;
 	}
 
-	
-
 	public int getOrderQty() {
 		return orderQty;
 	}
@@ -64,11 +60,11 @@ public class OrderDetails {
 		this.orderQty = orderQty;
 	}
 
-	public double getPurchaseAmt() {
+	public double getPurchaseAmount() {
 		return purchaseAmount;
 	}
 
-	public void setPurchaseAmt(double purchaseAmount) {
+	public void setPurchaseAmount(double purchaseAmount) {
 		this.purchaseAmount = purchaseAmount;
 	}
 
@@ -82,11 +78,9 @@ public class OrderDetails {
 
 	@Override
 	public String toString() {
-		return "OrderDetails [orderDetailId=" + orderDetailId +", orderQty=" + orderQty
-				+ ", purchaseAmount=" + purchaseAmount + ", orders=" + orders + "]";
+		return "OrderDetails [orderDetailId=" + orderDetailId + ", orderQty=" + orderQty + ", purchaseAmount="
+				+ purchaseAmount + ", orders=" + orders + "]";
 	}
-
-	
 
 	
 	

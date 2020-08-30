@@ -10,6 +10,7 @@ import com.saama.demo.Model.Customer;
 import com.saama.demo.Model.Orders;
 
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
-	List<Orders> findByCustomerId(Long customerId);  
+	List<Orders> findByCustomerId(Long customerId); 
+	
 	
 }

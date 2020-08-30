@@ -1,13 +1,14 @@
 package com.saama.demo.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import java.util.Optional;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,17 +16,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.util.concurrent.Service;
-import com.saama.demo.Exception.NotFoundException;
 import com.saama.demo.Model.Customer;
 import com.saama.demo.Model.OrderDetails;
 import com.saama.demo.Model.Orders;
 import com.saama.demo.Repository.CustomerRepository;
 import com.saama.demo.Repository.OrderDetailRepository;
-import com.saama.demo.Repository.OrdersRepository;
 import com.saama.demo.Service.DemoService;
 
 import io.swagger.annotations.Api;
@@ -41,6 +38,10 @@ public class DemoController {
 	@Autowired 
 	DemoService demoService;
 	
+	@Autowired
+	  private CustomerRepository customerRepository;
+	@Autowired
+	  private OrderDetailRepository orderDetailRepository;
 	
 	@ApiOperation(value = " Get all the Customers")
 	@GetMapping("/customer")
@@ -51,10 +52,39 @@ public class DemoController {
 	  return new ResponseEntity<List<Customer>>(listCustomers,HttpStatus.OK);
     }
     
-	/*@GetMapping("/customers/{customerLocation}")
-	public List<Customer> getAllValues(@RequestParam("customerLocation") String customerLocation){
-		 return customerRepository.findByCustomerLocation(customerLocation);
-	}*/
+	@GetMapping("/customers/{purchaseAmount}/{customerLocation}")
+	public JSONArray getAllValues(@PathVariable("purchaseAmount") double purchaseAmount,
+			@PathVariable("customerLocation") String customerLocation){
+		System.out.println("in method");
+		JSONArray jsonResponse = new JSONArray();
+		JSONObject j= new JSONObject();
+		
+	List<Customer> customerDetails = 	customerRepository.findByCustomerLocation(customerLocation);
+
+	for (Customer customer : customerDetails) {
+		List <Orders> orderDetails= customer.getOrders();
+		
+		for (Orders order : orderDetails) {
+			Map<String, String> responseMap = new HashMap<String, String>();
+			
+		OrderDetails orderData = order.getOrderDetails();
+		if(orderData.getPurchaseAmount()> purchaseAmount) {
+			
+			responseMap.put("customerName", customer.getCustomerName());
+			responseMap.put("customerPanNo", customer.getCustomerPanNumber());
+			responseMap.put("customerAdd", customer.getCustomerAddress());
+			responseMap.put("OrderName", order.getOrderName());
+			responseMap.put("OrderQty", String.valueOf(orderData.getOrderQty()));
+			jsonResponse.add(responseMap);
+		
+		}
+		
+		}
+		
+				}
+		
+		 return jsonResponse;
+	}
 	
 	@ApiOperation(value = " Get all the Customers with their orders")
     @GetMapping("/customer/{customerId}/orders")
