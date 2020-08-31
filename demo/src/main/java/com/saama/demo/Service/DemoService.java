@@ -11,9 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import com.saama.demo.Controller.DemoController;
 import com.saama.demo.Exception.CustomerNotFoundException;
 import com.saama.demo.Model.Customer;
 import com.saama.demo.Model.OrderDetails;
@@ -22,6 +19,10 @@ import com.saama.demo.Repository.CustomerRepository;
 import com.saama.demo.Repository.OrderDetailRepository;
 import com.saama.demo.Repository.OrdersRepository;
 
+
+/**
+ *@author pkumawat
+ */
 @Service
 public class DemoService implements IDemo {
 
@@ -82,7 +83,7 @@ public class DemoService implements IDemo {
 	                .map(orders -> {
 	                	orderDetails.setOrders(orders);
 	                    return orderDetailRepository.save(orderDetails);
-	                }).orElseThrow(() -> new CustomerNotFoundException("Student not found!"));
+	                }).orElseThrow(() -> new CustomerNotFoundException("Customer not found!"));
 	}
 
 	
@@ -91,27 +92,27 @@ public class DemoService implements IDemo {
 		JSONArray jsonResponse = new JSONArray();
 		JSONObject j= new JSONObject();
 		
-	List<Customer> customerDetails = 	customerRepository.findByCustomerLocation(customerLocation);
+	    List<Customer> customerDetails = customerRepository.findByCustomerLocation(customerLocation);
 
-	for (Customer customer : customerDetails) {
-		List <Orders> orderDetails= customer.getOrders();
-		
-		for (Orders order : orderDetails) {
-			Map<String, String> responseMap = new HashMap<String, String>();
+		for (Customer customer : customerDetails) {
+			List <Orders> orderDetails= customer.getOrders();
 			
-		OrderDetails orderData = order.getOrderDetails();
-		if(orderData.getPurchaseAmount()> purchaseAmount) {
+			for (Orders order : orderDetails) {
+				Map<String, String> responseMap = new HashMap<String, String>();
+				
+			OrderDetails orderData = order.getOrderDetails();
+			if(orderData.getPurchaseAmount()> purchaseAmount) {
+				
+				responseMap.put("customerName", customer.getCustomerName());
+				responseMap.put("customerPanNumber", customer.getCustomerPanNumber());
+				responseMap.put("customerAddress", customer.getCustomerAddress());
+				responseMap.put("orderName", order.getOrderName());
+				responseMap.put("orderQty", String.valueOf(orderData.getOrderQty()));
+				jsonResponse.add(responseMap);
+			}
 			
-			responseMap.put("customerName", customer.getCustomerName());
-			responseMap.put("customerPanNumber", customer.getCustomerPanNumber());
-			responseMap.put("customerAddress", customer.getCustomerAddress());
-			responseMap.put("orderName", order.getOrderName());
-			responseMap.put("orderQty", String.valueOf(orderData.getOrderQty()));
-			jsonResponse.add(responseMap);
+			}
 		}
-		
-		}
-	}
 		return jsonResponse;
 	}
 

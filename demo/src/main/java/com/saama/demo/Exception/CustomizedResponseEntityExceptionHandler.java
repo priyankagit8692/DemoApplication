@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+/**
+ *@author pkumawat
+ */
+
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
@@ -49,14 +53,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 	  } 
 	 
 	 
-	/* @Override
-	 protected ResponseEntity<Object> handleMissingPathVariable(
-				MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-		
-		    ApiError apiError = 
-			      new ApiError(HttpStatus.METHOD_NOT_ALLOWED, ex.getLocalizedMessage());
-			    return handleExceptionInternal(
-			      ex, apiError, headers, apiError.getStatus(), request);
-	 }*/
+	
 	 
 }

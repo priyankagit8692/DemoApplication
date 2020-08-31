@@ -10,12 +10,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 
+/**
+ *@author pkumawat
+ */
 
 @Entity
 @Table(name = "customer")
@@ -27,14 +29,13 @@ public class Customer {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	
-	
 	@Column(name = "customer_name")
 	@Size(min=5, message="Name should have atleast 2 characters")
 	private String customerName;
 	
 	@Column(name = "customer_address")
 	@NotNull
+	@Size(min=5, message="Customer Address should have atleast 4 characters")
 	private String customerAddress;
 	
 	@Column(name = "customer_location")

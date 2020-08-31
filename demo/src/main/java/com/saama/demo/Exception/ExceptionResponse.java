@@ -2,6 +2,9 @@ package com.saama.demo.Exception;
 
 import java.util.Date;
 
+/**
+ *@author pkumawat
+ */
 public class ExceptionResponse {
 	
 	private Date timeStamp;
